@@ -2,52 +2,33 @@
 
 local GAMEMODE = engine.ActiveGamemode()
 
-function CustomCrosshair_GUITab(dtabs)
-	local CrosshairsTab = vgui.Create("DPanelList", dtabs)
-	CrosshairsTab:StretchToParent(0, 0, dtabs:GetPadding() * 2, 0)
-	CrosshairsTab:EnableVerticalScrollbar(true)
-	CrosshairsTab:SetPadding(10)
-	CrosshairsTab:SetSpacing(10)
+function CustomCrosshair_GUIDot(tab)
+	local DotSettingsForm = vgui.Create("DForm", tab)
+	DotSettingsForm:SetName("Dot settings")
+	tab:AddItem(DotSettingsForm)
 
-	local CrosshairSettingsForm = vgui.Create("DForm", CrosshairsTab)
-	CrosshairSettingsForm:SetName("Crosshair settings")
-	CrosshairsTab:AddItem(CrosshairSettingsForm)
-	
-	-- Enable
-
-	local EnableCheckbox = CrosshairSettingsForm:CheckBox(
-			"Enable custom crosshair",
-			"cl_custom_crosshair")
-	
-	local CrosshairDotCB = CrosshairSettingsForm:CheckBox(
+	local CrosshairDotCB = DotSettingsForm:CheckBox(
 			"Enable crosshair dot",
 			"cl_custom_crosshair_dot")
-
-	-- Size
-	CrosshairSettingsForm:NumSlider(
-			"Crosshair width",
-			"cl_custom_crosshair_width", 1, 255, 0)
-
-	CrosshairSettingsForm:NumSlider(
-			"Crosshair height", 
-			"cl_custom_crosshair_height", 1, 255, 0)
-
-	CrosshairSettingsForm:NumSlider(
-			"Crosshair gap", 
-			"cl_custom_crosshair_gap", 0, 32, 0)
-
-	CrosshairSettingsForm:NumSlider(
-			"Crosshair radius", 
-			"cl_custom_crosshair_radius", 1, 255, 0)
-	
-	CrosshairSettingsForm:NumSlider(
+		
+	DotSettingsForm:NumSlider(
 			"Dot radius",
 			"cl_custom_crosshair_dot_radius", 1, 16, 0)
 	
-	CrosshairSettingsForm:NumSlider(
+	DotSettingsForm:NumSlider(
 			"Dot resolution",
 			"cl_custom_crosshair_dot_resolution", 4, 64, 0)
+end
 
+function CustomCrosshair_GUISettings(tab)
+	local CrosshairSettingsForm = vgui.Create("DForm", tab)
+	CrosshairSettingsForm:SetName("Crosshair settings")
+	tab:AddItem(CrosshairSettingsForm)
+
+	-- Enable
+	local EnableCheckbox = CrosshairSettingsForm:CheckBox(
+			"Enable custom crosshair",
+			"cl_custom_crosshair")
 
 	-- Style
 
@@ -84,11 +65,68 @@ function CustomCrosshair_GUITab(dtabs)
 
 	CrosshairSettingsForm:AddItem(StyleBox)
 
-	-- Colour
+	-- Options
+	local CrosshairEnabled = GetConVar("cl_custom_crosshair"):GetBool()
+	local CrosshairStyle = GetConVar("cl_custom_crosshair_style"):GetInt()
 
-	local CrosshairColourForm = vgui.Create("DForm", CrosshairsTab)
+	if (CrosshairEnabled) then
+				CrosshairSettingsForm:NumSlider(
+					"Crosshair width",
+					"cl_custom_crosshair_width", 1, 255, 0)
+				CrosshairSettingsForm:NumSlider(
+					"Crosshair height",
+					"cl_custom_crosshair_height", 1, 255, 0)
+				CrosshairSettingsForm:NumSlider(
+					"Crosshair gap", 
+					"cl_custom_crosshair_gap", 0, 32, 0)
+				CrosshairSettingsForm:NumSlider(
+					"Crosshair radius", 
+					"cl_custom_crosshair_radius", 1, 255, 0)
+	end
+
+
+
+end
+
+function CustomCrosshair_GUITab(dtabs)
+	local CrosshairsTab = vgui.Create("DPanelList", dtabs)
+	CrosshairsTab:StretchToParent(0, 0, dtabs:GetPadding() * 2, 0)
+	CrosshairsTab:EnableVerticalScrollbar(true)
+	CrosshairsTab:SetPadding(10)
+	CrosshairsTab:SetSpacing(10)
+
+	local CrosshairsTabs = vgui.Create("DPropertySheet", dtabs)
+	CrosshairsTabs:SetPos(15, 30)
+	CrosshairsTabs:SetSize(600, 343)
+	CrosshairsTab:AddItem(CrosshairsTabs)
+
+	local CrosshairSettingsTab = vgui.Create("DPanelList", CrosshairsTabs)
+	CrosshairSettingsTab:StretchToParent(0, 0, dtabs:GetPadding() * 2, 0)
+	CrosshairSettingsTab:EnableVerticalScrollbar(true)
+	CrosshairSettingsTab:SetPadding(10)
+	CrosshairSettingsTab:SetSpacing(10)
+	CustomCrosshair_GUISettings(CrosshairSettingsTab)
+	CrosshairsTabs:AddSheet("Crosshair", CrosshairSettingsTab, nil, false, false, "Crosshair config")
+
+	-- Crosshair Dot Tab
+	local CrosshairDotTab = vgui.Create("DPanelList", CrosshairsTabs)
+	CrosshairDotTab:StretchToParent(0, 0, dtabs:GetPadding() * 2, 0)
+	CrosshairDotTab:EnableVerticalScrollbar(true)
+	CrosshairDotTab:SetPadding(10)
+	CrosshairDotTab:SetSpacing(10)
+	CustomCrosshair_GUIDot(CrosshairDotTab)
+	CrosshairsTabs:AddSheet("Dot", CrosshairDotTab, nil, false, false, "Dot config")
+
+	-- Colour
+	local CrosshairColourTab = vgui.Create("DPanelList", CrosshairsTabs)
+	CrosshairColourTab:StretchToParent(0, 0, dtabs:GetPadding() * 2, 0)
+	CrosshairColourTab:EnableVerticalScrollbar(true)
+	CrosshairColourTab:SetPadding(10)
+	CrosshairColourTab:SetSpacing(10)
+
+	local CrosshairColourForm = vgui.Create("DForm", CrosshairColourTab)
 	CrosshairColourForm:SetName("Crosshair colour")
-	CrosshairsTab:AddItem(CrosshairColourForm)
+	CrosshairColourTab:AddItem(CrosshairColourForm)
 
 	local ColourSelector = vgui.Create("DColorMixer", CrosshairColourForm)
 	ColourSelector:SetConVarR("cl_custom_crosshair_red")
@@ -97,17 +135,27 @@ function CustomCrosshair_GUITab(dtabs)
 	ColourSelector:SetConVarA("cl_custom_crosshair_alpha")
 	CrosshairColourForm:AddItem(ColourSelector)
 
-	-- Credits
-	local CreditsPanel = vgui.Create("DPanel", CrosshairsTab)
-	CreditsPanel:SetText("Credits")
-	CrosshairsTab:AddItem(CreditsPanel)
+	CrosshairsTabs:AddSheet("Colour", CrosshairColourTab, nil, false, false, "Crosshair colour")
+	-- About
+	local AboutTab = vgui.Create("DPanelList", CrosshairsTabs)
+	AboutTab:StretchToParent(0, 0, dtabs:GetPadding() * 2, 0)
+	AboutTab:EnableVerticalScrollbar(true)
+	AboutTab:SetPadding(10)
+	AboutTab:SetSpacing(10)
+	
+	local AboutForm = vgui.Create("DForm", AboutTab)
+	AboutForm:SetName("About")
+	AboutTab:AddItem(AboutForm)
+	
+	AboutForm:Help("Custom crosshairs by RedFox0x20")
+	AboutForm:Help("Version: Development")
+	
+	local ResetButton = vgui.Create("DButton")
+	ResetButton:SetText("Reset to default")
+	ResetButton:SetConsoleCommand("cl_custom_crosshair_default", nil)
+	AboutForm:AddItem(ResetButton)
 
-	local CreditsLabel = vgui.Create("DLabel", CreditsPanel)
-	CreditsLabel:SetText("Custom crosshairs created by RedFox0x20")
-	CreditsLabel:SetDark(1)
-	CreditsLabel:Center()
-	CreditsLabel:CenterHorizontal(0.5)
-	CreditsLabel:Dock(FILL)
+	CrosshairsTabs:AddSheet("About", AboutTab, nil, false, false, "About custom crosshairs")
 
 	dtabs:AddSheet("Crosshair", CrosshairsTab, "icon16/wrench.png", false, false, "Custom crosshair settings")
 end
