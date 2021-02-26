@@ -36,12 +36,12 @@ end
 
 if (not ConVarExists("cl_custom_crosshair_width")) then
 	CreateClientConVar("cl_custom_crosshair_width", "10", true, false,
-			"Set the custom crosshair width", 5, nil)
+			"Set the custom crosshair width", 1, nil)
 end
 
 if (not ConVarExists("cl_custom_crosshair_height")) then
 	CreateClientConVar("cl_custom_crosshair_height", "10", true, false,
-			"Set the custom crosshair height", 5, nil)
+			"Set the custom crosshair height", 1, nil)
 end
 
 if (not ConVarExists("cl_custom_crosshair_gap")) then
@@ -68,7 +68,7 @@ end
 
 if (not ConVarExists("cl_custom_crosshair_dot_resolution")) then
 	CreateClientConVar("cl_custom_crosshair_dot_resolution", "16", true, false,
-			"Set the custom crosshair dot resolution", 5, 64)
+			"Set the custom crosshair dot resolution", 4, 64)
 end
 
 

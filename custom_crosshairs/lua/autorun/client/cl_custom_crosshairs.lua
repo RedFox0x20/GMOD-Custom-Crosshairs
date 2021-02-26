@@ -26,11 +26,11 @@ function CustomCrosshair_GUITab(dtabs)
 	-- Size
 	CrosshairSettingsForm:NumSlider(
 			"Crosshair width",
-			"cl_custom_crosshair_width", 5, 255, 0)
+			"cl_custom_crosshair_width", 1, 255, 0)
 
 	CrosshairSettingsForm:NumSlider(
 			"Crosshair height", 
-			"cl_custom_crosshair_height", 5, 255, 0)
+			"cl_custom_crosshair_height", 1, 255, 0)
 
 	CrosshairSettingsForm:NumSlider(
 			"Crosshair gap", 
@@ -46,7 +46,7 @@ function CustomCrosshair_GUITab(dtabs)
 	
 	CrosshairSettingsForm:NumSlider(
 			"Dot resolution",
-			"cl_custom_crosshair_dot_resolution", 5, 64, 0)
+			"cl_custom_crosshair_dot_resolution", 4, 64, 0)
 
 
 	-- Style

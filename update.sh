@@ -1,4 +1,6 @@
 #!/bin/bash
+~/.steam/steam/steamapps/common/GarrysMod/bin/gmad_linux custom_crosshairs
+
 echo -e "Changes made $(date)\n" > /tmp/changes.txt
 vim + /tmp/changes.txt
 
