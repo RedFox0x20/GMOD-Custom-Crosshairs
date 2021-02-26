@@ -1,4 +1,0 @@
-~ Change min width/height to 1
-~ Fix the dot as it is intermittent
-~ Change the UI to a tab based system rather than scrolling
-~ Change the UI to only show settings relevant to the selected crosshair
