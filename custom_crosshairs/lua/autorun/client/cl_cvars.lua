@@ -5,6 +5,11 @@ if (not ConVarExists("cl_custom_crosshair")) then
 			"Enable/Disable the custom crosshair", 0, nil)
 end
 
+if (not ConVarExists("cl_custom_crosshair_reactive")) then
+	CreateClientConVar("cl_custom_crosshair_reactive", "0", true, false,
+			"Make the crosshair respond to movement and recoil", 0, 1)
+end
+
 -- Crosshair colours
 
 if (not ConVarExists("cl_custom_crosshair_red")) then

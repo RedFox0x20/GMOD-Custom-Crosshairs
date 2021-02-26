@@ -141,8 +141,19 @@ if CLIENT then
 		local ply = LocalPlayer()
 		if (not IsValid(ply)) then return end
 
-		if (GetConVar("cl_custom_crosshair"):GetBool()) then		
-			hook.Call("TTTCrosshairHook", nil, nil)
+      
+	local sights = (not self.NoSights) and self:GetIronsights()
+      local scale = math.max(0.2,  10 * self:GetPrimaryCone())
+	local LastShootTime = self:LastShootTime()
+      scale = scale * (2 - math.Clamp( (CurTime() - LastShootTime) * 5, 0.0, 1.0
+				  )) * (GetConVar("cl_Custom_Crosshair_gap"):GetInt()/2)
+	  				* (1+ (ply:GetVelocity():Length() / ply:GetWalkSpeed()))
+
+		if (GetConVar("cl_custom_crosshair"):GetBool()) then
+			if (not GetConVar("cl_custom_crosshair_reactive"):GetBool()) then
+				scale = 1
+			end
+			hook.Call("TTTCrosshairHook", nil, scale * (sights and 0.8 or 1))
 			return
 		end
 
@@ -150,14 +161,10 @@ if CLIENT then
 			return
 		end
 
-      local sights = (not self.NoSights) and self:GetIronsights()
 
       local x = math.floor(ScrW() / 2.0)
       local y = math.floor(ScrH() / 2.0)
-      local scale = math.max(0.2,  10 * self:GetPrimaryCone())
 
-      local LastShootTime = self:LastShootTime()
-      scale = scale * (2 - math.Clamp( (CurTime() - LastShootTime) * 5, 0.0, 1.0 ))
 
       local alpha = sights and sights_opacity:GetFloat() or 1
       local bright = crosshair_brightness:GetFloat() or 1

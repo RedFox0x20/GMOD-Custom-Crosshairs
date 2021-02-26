@@ -26,9 +26,13 @@ function CustomCrosshair_GUISettings(tab)
 	tab:AddItem(CrosshairSettingsForm)
 
 	-- Enable
-	local EnableCheckbox = CrosshairSettingsForm:CheckBox(
+	local EnableToggle = CrosshairSettingsForm:CheckBox(
 			"Enable custom crosshair",
 			"cl_custom_crosshair")
+
+	local ReactiveToggle = CrosshairSettingsForm:CheckBox(
+			"Reactive crosshair",
+			"cl_custom_crosshair_reactive")
 
 	-- Style
 
@@ -179,7 +183,7 @@ function draw.Circle( x, y, radius, seg )
 	surface.DrawPoly( cir )
 end
 
-function CustomCrosshair_Draw()
+function CustomCrosshair_Draw(Scale)
 	if (not GetConVar("cl_custom_crosshair"):GetBool()) then return end
 
 	local Style = GetConVar("cl_custom_crosshair_style"):GetInt()
@@ -202,20 +206,20 @@ function CustomCrosshair_Draw()
 		[0] = function () end,
 		-- Cross
 		[1] = function()
-				surface.DrawLine(SW/2-CW-CG, SH/2, SW/2-CG, SH/2)
-				surface.DrawLine(SW/2+CW+CG, SH/2, SW/2+CG, SH/2)
-				surface.DrawLine(SW/2, SH/2-CH-CG, SW/2, SH/2-CG)
-				surface.DrawLine(SW/2, SH/2+CH+CG, SW/2, SH/2+CG)
+				surface.DrawLine(SW/2-CW-(CG*Scale), SH/2, SW/2-(CG*Scale), SH/2)
+				surface.DrawLine(SW/2+CW+(CG*Scale), SH/2, SW/2+(CG*Scale), SH/2)
+				surface.DrawLine(SW/2, SH/2-CH-(CG*Scale), SW/2, SH/2-(CG*Scale))
+				surface.DrawLine(SW/2, SH/2+CH+(CG*Scale), SW/2, SH/2+(CG*Scale))
 			end,
 		-- T
 		[2] = function()
-				surface.DrawLine(SW/2-CW-CG, SH/2, SW/2-CG, SH/2)
-				surface.DrawLine(SW/2+CW+CG, SH/2, SW/2+CG, SH/2)
-				surface.DrawLine(SW/2, SH/2+CH+CG, SW/2, SH/2+CG)
+				surface.DrawLine(SW/2-CW-(CG*Scale), SH/2, SW/2-(CG*Scale), SH/2)
+				surface.DrawLine(SW/2+CW+(CG*Scale), SH/2, SW/2+(CG*Scale), SH/2)
+				surface.DrawLine(SW/2, SH/2+CH+(CG*Scale), SW/2, SH/2+CG)
 			end,
 		-- Circle
 		[3] = function()
-				surface.DrawCircle(SW/2, SH/2, CR, R, G, B, A)
+				surface.DrawCircle(SW/2, SH/2, CR*Scale, R, G, B, A)
 			end,
 	}
 
